@@ -1,0 +1,1 @@
+export const baseURL = 'http://51.20.42.187:8080/api/send-email';

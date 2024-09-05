@@ -1,43 +1,25 @@
 "use client"
 import React from 'react';
-import { useForm } from 'react-hook-form';
 
+import {useForm} from 'react-hook-form';
 import styles from './UserForm.module.css';
+import {baseURL} from "@/app/constants/baseURL";
 
 
+const UserForm = () => {
+    const {register, handleSubmit, reset, formState: {errors}} = useForm();
 
-const UserForm= () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
 
     const onSubmit = async (data) => {
-        console.log(data);
-        
         try {
-            const response = await fetch('localhost:8080/api/send-email', {
+            const response = await fetch(baseURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
-                // body: JSON.stringify({
-                //     notificationInterval: data.notificationInterval,
-                //     searchQuery: data.searchQuery,
-                //     candidateName: data.candidateName,
-                //     weeklyNotificationDay: data.weeklyNotificationDay,
-                //     email: data.email,
-                //     notificationTime: data.notificationTime,
-                //     relevancyScore: data.relevancyScore,
-                // }),
             });
-
-            if (response.ok) {
-                const result = await response.json();
-               alert('Notification settings saved successfully', result);
-
-               reset();
-            } else {
-                console.error('Failed to save notification settings');
-            }
         } catch (e) {
             console.error('An error occurred:', error);
         }
@@ -65,7 +47,8 @@ const UserForm= () => {
 
             <section className={styles.formGroup}>
                 <label htmlFor="candidateName">Candidate Name</label>
-                <input id="candidateName" type="text" placeholder="..." {...register("candidateName", {required: true})} />
+                <input id="candidateName" type="text"
+                       placeholder="..." {...register("candidateName", {required: true})} />
                 {errors.searchQuery && <span className={styles.errorText}>This field is required</span>}
             </section>
 
